@@ -1,0 +1,26 @@
+header{
+    width: 100%;
+    color: #F0F0F0;
+    background-color: #0c0c0c;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 1rem;
+}
+
+.tabela {
+    max-width: 100%;
+    overflow: auto;
+    border-radius: 1rem;
+}
+
+.table {
+    width: 1800px;
+    margin: 0;
+}
+
+.oculto {
+    display: none;
+    transition-delay: 3s;
+}
