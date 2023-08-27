@@ -5,7 +5,7 @@ const modal = new bootstrap.Modal('#aviso', {
 document.getElementById("aviso").addEventListener('hidden.bs.modal', evento => {
     // Aqui vai ocultar o botão de loading
     document.getElementById("loading").classList.add("oculto")
-  })
+})
 window.addEventListener("load", buscarDados())
 
 function buscarDados() {
@@ -14,11 +14,11 @@ function buscarDados() {
 
     // Com o fetch realizaremos uma solicitção http para a api  
     fetch("https://api-curso-programacao-web.vercel.app/api/usuarios", {
-        // deste modo estamos usando o método GET, e como  é necessário login e senha através de uma authentication, passamos as informações através do headers, onde passa as configurações de nossa API. 
-        headers: {
-            "Authorization": "Basic " + btoa("admin:admin") // com o método btoa ele vai ser usado para codificar uma string no formato base-64
-        }
-    })
+            // deste modo estamos usando o método GET, e como  é necessário login e senha através de uma authentication, passamos as informações através do headers, onde passa as configurações de nossa API. 
+            headers: {
+                "Authorization": "Basic " + btoa("admin:admin") // com o método btoa ele vai ser usado para codificar uma string no formato base-64
+            }
+        })
         .then(resposta => resposta.json()) // Aqui após a solicitação HTTP, ele transforma a informação em .json para conseguirmos realizar a manipulação em javascript
         .then(resposta => {
             console.log(resposta)
@@ -45,6 +45,12 @@ function montarTabela(usuarios) {
     // })
 
     usuarios.forEach(usuario => {
+        // Forma usual bem boa
+        // let data = new Date(usuario.data_nascimento).toLocaleDateString("pt-br", {
+        //     timeZone: "Europe/London"
+        // })
+        // outra forma
+        let data = usuario.data_nascimento.split("-").reverse().join("/")
         let telefone = `(${usuario.ddd}) ${usuario.telefone}`
         let endereco = `${usuario.endereco}, ${usuario.bairro}, ${usuario.cidade} - ${usuario.estado}, ${usuario.cep} `
 
@@ -52,7 +58,7 @@ function montarTabela(usuarios) {
                         <td>${usuario.id}</td>
                         <td>${usuario.nome + " " + usuario.sobrenome} </td>
                         <td>${usuario.email}</td>
-                        <td>${usuario.data_nascimento}</td>
+                        <td>${data}</td>
                         <td>${telefone}</td>
                         <td>${endereco}</td>
         </tr> `
