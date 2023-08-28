@@ -14,6 +14,30 @@ document.getElementById("sucesso").addEventListener('hidden.bs.modal', evento =>
     window.location.href = "./index.html" // Aqui ele vai direcionar após a criação de usuário o cliente para a página inicial.
 })
 
+var usuario = null
+
+window.addEventListener("load", ()=> {
+    let id = new URLSearchParams(window.location.search).get("id")
+
+    if(!id) return
+
+    fetch("https://api-curso-programacao-web.vercel.app/api/usuarios/"+id, {
+            // deste modo estamos usando o método GET, e como  é necessário login e senha através de uma authentication, passamos as informações através do headers, onde passa as configurações de nossa API. 
+            headers: {
+                "Authorization": "Basic " + btoa("admin:admin") // com o método btoa ele vai ser usado para codificar uma string no formato base-64
+            }
+        })
+        .then(resposta => resposta.json()) // Aqui após a solicitação HTTP, ele transforma a informação em .json para conseguirmos realizar a manipulação em javascript
+        .then(resposta => {
+            console.log(resposta)
+            usuario = resposta
+        })
+        .catch(error => {
+            console.log(error.message)
+            modal.show() // aqui mostramos o modal de erro com o bootstrap
+        })
+})
+
 document.querySelector("#cep").addEventListener("input", evento => {
     document.getElementById("loadingCep").classList.remove("oculto") // Para aparecer o loading enquando carrega os dados passado para a API
     let value = evento.target.value // aqui pega o dado passado para o input do id cep
