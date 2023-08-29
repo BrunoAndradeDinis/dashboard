@@ -14,14 +14,19 @@ document.getElementById("sucesso").addEventListener('hidden.bs.modal', evento =>
     window.location.href = "./index.html" // Aqui ele vai direcionar após a criação de usuário o cliente para a página inicial.
 })
 
+// validação de usuário
 var usuario = null
 
-window.addEventListener("load", ()=> {
+window.addEventListener("load", () => {
+
     let id = new URLSearchParams(window.location.search).get("id")
 
-    if(!id) return
+    if (!id) return
 
-    fetch("https://api-curso-programacao-web.vercel.app/api/usuarios/"+id, {
+    document.querySelector(".container").classList.add("oculto")
+    document.getElementById("loading").classList.remove("oculto")
+
+    fetch("https://api-curso-programacao-web.vercel.app/api/usuarios/" + id, {
             // deste modo estamos usando o método GET, e como  é necessário login e senha através de uma authentication, passamos as informações através do headers, onde passa as configurações de nossa API. 
             headers: {
                 "Authorization": "Basic " + btoa("admin:admin") // com o método btoa ele vai ser usado para codificar uma string no formato base-64
@@ -31,12 +36,25 @@ window.addEventListener("load", ()=> {
         .then(resposta => {
             console.log(resposta)
             usuario = resposta
+            preencheForm(resposta)
         })
         .catch(error => {
             console.log(error.message)
             modal.show() // aqui mostramos o modal de erro com o bootstrap
         })
 })
+
+// Aqui vai preencher o formulário de acordo com o ID que for passado. Como nos campos não tem id, fizemos uma condição para caso seja diferente de "id" continue o preenchimento dos forms.
+function preencheForm(usuario) {
+    let campos = Object.keys(usuario)
+
+    campos.forEach(campo => {
+        if (campo !== "id") document.getElementById(campo).value = usuario[campo]
+    })
+
+    document.querySelector(".container").classList.remove("oculto")
+    document.getElementById("loading").classList.add("oculto")
+}
 
 document.querySelector("#cep").addEventListener("input", evento => {
     document.getElementById("loadingCep").classList.remove("oculto") // Para aparecer o loading enquando carrega os dados passado para a API
@@ -88,6 +106,10 @@ function limpaEndereco() {
 document.querySelector("form").addEventListener("submit", evento => {
     evento.preventDefault() // tirando o compartamento padrão enviado pelo submit após o click
 
+    let button = document.querySelector('button[type="submit"]')
+    button.querySelector("span").classList.remove("oculto")
+    button.disabled = true
+
     let respostas = {}
     let campos = ["nome", "sobrenome", "email", "data_nascimento", "ddd", "telefone", "cep", "endereco", "bairro", "cidade", "estado"]
 
@@ -102,7 +124,11 @@ document.querySelector("form").addEventListener("submit", evento => {
         }
     })
 
-    if (document.querySelector(".is-invalid")) return // caso mesmo após tudo preenchido ainda tenha um campo inválido vai retornar para ser re-preenchido.
+    if (document.querySelector(".is-invalid")) {
+        button.querySelector('span').classList.add("oculto")
+        button.disabled = false
+        return
+    } // caso mesmo após tudo preenchido ainda tenha um campo inválido vai retornar para ser re-preenchido.
 
     console.log(respostas) // após tudo preenchido, vai imprimir o arry com todas as respostas preenchidas.
 
@@ -111,22 +137,28 @@ document.querySelector("form").addEventListener("submit", evento => {
 
     console.log(respostas)
 
-    fetch('https://api-curso-programacao-web.vercel.app/api/usuarios', { // Realizado o POST através da API
+    let url = "https://api-curso-programacao-web.vercel.app/api/usuarios"
+    // caso exista um usuário, ele atribuirá para a url https://[...]/usuario.id
+    if (usuario) url += `/${usuario.id}`
+
+    fetch(url, { // Realizado o POST através da API
             headers: {
                 "Authorization": "Basic " + btoa("admin:admin")
             },
-            method: 'POST', // Declarando o método 'POST
+            method: usuario ? 'PUT' : 'POST', // Declarando o método 'POST
             body: JSON.stringify(respostas) // Transformando no body nosso objeto/array em string para o envido direto a API, para não retornar um status não esperado
         })
         .then(resposta => {
             console.log(resposta)
-            if (resposta.ok && resposta.status === 201) { // comparando nossa resposta como ok e o status igual a 201 "Operação realizada com sucesso"
+            if (resposta.ok && (resposta.status === 201 || resposta.status === 204)) { // comparando nossa resposta como ok e o status igual a 201 ou 204 "Operação realizada com sucesso"
                 modalSucesso.show() // mostrando o modal de sucesso ao criar o cadastro.
             } else throw new Error("Erro na requisição")
         })
         .catch(error => {
             console.log(error.message)
             modal.show() // mostrando o modal de erro ao criar o cadastro.
+            button.querySelector('span').classList.add("oculto")
+            button.disabled = false
             return
         })
 })
