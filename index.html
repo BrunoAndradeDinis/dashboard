@@ -12,6 +12,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/2474/2474209.png" type="image/x-icon">
 </head>
 
 <body>
@@ -33,6 +34,21 @@
     </header>
 
     <div class="container mt-3 mb-3">
+        <div class="pesquisa oculto row mb-3 animate__animated animate__fadeIn">
+            <div class="col-md-6">
+                <label for="filtro" class="form-label">Pesquisar Usuário</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Digite o nome do usuário:" id="filtro"
+                        oninput="filtrar()">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="filtrar()">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="tabela oculto animate__animated animate__fadeIn">
             <table class="table table-dark table-striped table-fixed table-hover">
                 <thead>
@@ -52,6 +68,33 @@
                 </tbody>
             </table>
         </div>
+        <div class="graficos oculto animate__animated animate__fadeIn">
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="grafico-cidades">
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="grafico-estados">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="grafico-emails">
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="grafico-idades">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="text-center animate__animated animate__fadeIn" id="loading">
             <div class="spinner-grow" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -114,9 +157,12 @@
             </div>
         </div>
     </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
     </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="script.js"></script>
 </body>
 

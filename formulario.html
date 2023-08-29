@@ -12,6 +12,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/2474/2474209.png" type="image/x-icon">
 </head>
 
 <body>
@@ -60,13 +61,15 @@
                 </div>
                 <div class="col-md-1">
                     <label for="ddd" class="form-label">DDD</label>
-                    <input type="number" class="form-control" id="ddd" placeholder="DDD" min="0" max="99">
+                    <input type="number" class="form-control" id="ddd" placeholder="DDD" pattern="^\d[0-9]{2}$">
+                    <!-- Passando uma Regex através do pattern ("padrão") informando o tipo de dado que será aceito no input-->
                     <div class="invalid-feedback">O DDD precisa ser preechido!</div>
                 </div>
                 <div class="col-md-3">
                     <label for="telefone" class="form-label">Telefone</label>
-                    <input type="number" class="form-control" id="telefone" placeholder="Digite o telefone" min="11"
-                        max="999999999">
+                    <input type="number" class="form-control" id="telefone" placeholder="Digite o telefone"
+                        pattern="^(?:\d{8}|[1-9]{2}9\d{8})$">
+                    <!-- ^: Início da string, (?: ... ): Grupo de não-captura para agrupar as alternativas, \d{8}: Corresponde a exatamente 8 dígitos (número de telefone fixo), |: Operador de alternância (ou), [1-9]{2}9\d{8}: Corresponde a números de celular, $: Fim da string-->
                     <div class="invalid-feedback">O telefone precisa ser preechido!</div>
                 </div>
             </div>
@@ -76,7 +79,8 @@
                         CEP
                         <span class="spinner-grow spinner-grow-sm oculto" aria-hidden="true" id="loadingCep"></span>
                     </label>
-                    <input type="number" class="form-control" id="cep" placeholder="Digite o cep" min="0">
+                    <input type="number" class="form-control" id="cep" placeholder="Digite o cep"
+                        pattern="^\d{5}-?\d{3}$">
                     <div class="form-text">
                         Não sabe seu CEP? <a href="https://buscacepinter.correios.com.br/app/endereco/index.php"
                             target="_blank">Clique aqui!</a>

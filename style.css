@@ -13,14 +13,21 @@ header{
     max-width: 100%;
     overflow: auto;
     border-radius: 1rem;
+    max-height: 70vh;
 }
 
 .table {
     width: 1800px;
     margin: 0;
+    height: 100%;
 }
 
 .oculto {
     display: none;
     transition-delay: 3s;
+}
+
+.graficos .col-md-6 {
+    overflow-x: auto;
+    overflow-y: hidden;
 }
